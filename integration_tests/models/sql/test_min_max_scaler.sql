@@ -2,7 +2,7 @@
 
 with data as (
 
-    {{ dbt_ml_preprocessing.min_max_scaler('data_min_max_scaler','col_to_scale') }}
+    {{ dbt_ml_preprocessing.min_max_scaler( ref('data_max_abs_scaler') ,'col_to_scale') }}
 
 )
 
