@@ -1,0 +1,11 @@
+id_col,col_to_label_encode,col_to_label_encode_encoded
+1,paris,3
+2,tokyo,5
+3,sydney,4
+4,new york,2
+5,london,1
+4,new york,2
+7,new york,2
+8,paris,3
+9,paris,3
+10,amsterdam,0
