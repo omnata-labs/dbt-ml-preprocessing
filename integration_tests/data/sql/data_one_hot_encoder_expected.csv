@@ -1,0 +1,11 @@
+id_col,column_to_encode,column_to_encode_A,column_to_encode_B,column_to_encode_C,column_to_encode_D
+1,A,1,0,0,0
+2,B,0,1,0,0
+3,C,0,0,1,0
+4,D,0,0,0,1
+5,C,0,0,1,0
+4,A,1,0,0,0
+7,A,1,0,0,0
+8,C,0,0,1,0
+9,C,0,0,1,0
+10,A,1,0,0,0

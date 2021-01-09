@@ -49,3 +49,10 @@ seeds:
       data_k_bins_discretizer_50_bins_expected:
         +column_types:
           col_to_bin_binned: NUMBER(38,0)
+
+      data_one_hot_encoder_expected:
+        +column_types:
+          column_to_encode_A: boolean
+          column_to_encode_B: boolean
+          column_to_encode_C: boolean
+          column_to_encode_D: boolean
