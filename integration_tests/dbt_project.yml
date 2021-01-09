@@ -41,3 +41,11 @@ seeds:
       data_min_max_scaler_with_column_selection_expected:
         +column_types:
           col_to_scale_scaled: NUMBER(38,6)
+
+      data_k_bins_discretizer_default_bins_expected:
+        +column_types:
+          col_to_bin_binned: NUMBER(38,0)
+
+      data_k_bins_discretizer_50_bins_expected:
+        +column_types:
+          col_to_bin_binned: NUMBER(38,0)

@@ -20,3 +20,13 @@ models:
     tests:
       - dbt_utils.equality:
           compare_model: ref('data_min_max_scaler_with_column_selection_expected')
+
+  - name: test_k_bins_discretizer_default_bins
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_k_bins_discretizer_default_bins_expected')
+
+  - name: test_k_bins_discretizer_50_bins
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_k_bins_discretizer_50_bins_expected')
