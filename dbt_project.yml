@@ -1,0 +1,10 @@
+name: 'dbt_ml_preprocessing'
+version: '0.1.0'
+
+require-dbt-version: ">=0.15.1"
+
+source-paths: ["models"]
+target-path: "target"
+clean-targets: ["target", "dbt_modules"]
+macro-paths: ["macros"]
+log-path: "logs"

@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: test_max_abs_scaler
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_max_abs_scaler_expected')
+
+  - name: test_max_abs_scaler_with_column_selection
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_max_abs_scaler_with_column_selection_expected')
+
+  - name: test_min_max_scaler
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_min_max_scaler_expected')
+
+  - name: test_min_max_scaler_with_column_selection
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_min_max_scaler_with_column_selection_expected')

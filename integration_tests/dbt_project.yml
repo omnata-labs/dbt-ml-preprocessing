@@ -1,0 +1,43 @@
+
+name: 'dbt_ml_preprocessing_integration_tests'
+version: '1.0'
+
+profile: 'integration_tests'
+
+# require-dbt-version: inherit this from dbt-utils
+
+config-version: 2
+
+source-paths: ["models"]
+analysis-paths: ["analysis"]
+test-paths: ["tests"]
+data-paths: ["data"]
+macro-paths: ["macros"]
+
+target-path: "target"  # directory which will store compiled SQL files
+clean-targets:         # directories to be removed by `dbt clean`
+    - "target"
+    - "dbt_modules"
+
+seeds:
+
+  +quote_columns: false
+
+  dbt_ml_preprocessing_integration_tests:
+
+    sql:
+      data_max_abs_scaler_expected:
+        +column_types:
+          col_to_scale_scaled: NUMBER(38,6)
+
+      data_max_abs_scaler_with_column_selection_expected:
+        +column_types:
+          col_to_scale_scaled: NUMBER(38,6)
+
+      data_min_max_scaler_expected:
+        +column_types:
+          col_to_scale_scaled: NUMBER(38,6)
+
+      data_min_max_scaler_with_column_selection_expected:
+        +column_types:
+          col_to_scale_scaled: NUMBER(38,6)
