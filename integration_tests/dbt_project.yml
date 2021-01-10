@@ -56,3 +56,11 @@ seeds:
           column_to_encode_B: boolean
           column_to_encode_C: boolean
           column_to_encode_D: boolean
+
+      data_quantile_transformer_expected:
+        +column_types:
+          col_to_transform_transformed: NUMBER(38,6)
+
+      data_quantile_transformer:
+        +column_types:
+          col_to_transform: NUMBER(38,6)
