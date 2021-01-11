@@ -4,8 +4,9 @@ with aggregates as (
   from {{ source_table }})
 select 
 {% for column in include_columns %}
-{{ source_table }}.{{ column }},
+source_table.{{ column }},
 {% endfor %}
 {{ source_column }} / max_abs_value AS {{ source_column }}_scaled
-from aggregates,{{ source_table }}
+from aggregates,{{ source_table }} as source_table
 {% endmacro %}
+

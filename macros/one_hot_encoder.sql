@@ -18,8 +18,8 @@ The `one_hot_encoder` macro only supports an 'handle_unknown' value of 'ignore' 
     {% endset %}
     {%- do exceptions.raise_compiler_error(error_message) -%}
 {%- endif -%}
-{{ adapter.dispatch('one_hot_encoder')(source_table,source_column,categories,handle_unknown,include_columns) }}
-{% endmacro %}
+{{ adapter.dispatch('one_hot_encoder',packages=['dbt_ml_preprocessing'])(source_table,source_column,categories,handle_unknown,include_columns) }}
+{%- endmacro %}
 
 {% macro default__one_hot_encoder(source_table,source_column,categories,handle_unknown,include_columns) %}
 select 
@@ -31,7 +31,7 @@ iff({{source_column}}='{{category}}',true,false) as {{source_column}}_{{category
 {% if not loop.last %}, {% endif %}
 {% endfor %}
 from {{ source_table }}
-{% endmacro %}
+{%- endmacro %}
 
 {% macro bigquery__one_hot_encoder(source_table,source_column,categories,handle_unknown,include_columns) %}
 select 
@@ -43,4 +43,4 @@ iff({{source_column}}='{{category}}',true,false) as {{source_column}}_{{category
 {% if not loop.last %}, {% endif %}
 {% endfor %}
 from {{ source_table }}
-{% endmacro %}
+{%- endmacro %}
