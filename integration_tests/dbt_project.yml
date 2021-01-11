@@ -28,27 +28,27 @@ seeds:
     sql:
       data_max_abs_scaler_expected:
         +column_types:
-          col_to_scale_scaled: NUMBER(38,6)
+          col_to_scale_scaled: BIGNUMERIC
 
       data_max_abs_scaler_with_column_selection_expected:
         +column_types:
-          col_to_scale_scaled: NUMBER(38,6)
+          col_to_scale_scaled: BIGNUMERIC
 
       data_min_max_scaler_expected:
         +column_types:
-          col_to_scale_scaled: NUMBER(38,6)
+          col_to_scale_scaled: BIGNUMERIC
 
       data_min_max_scaler_with_column_selection_expected:
         +column_types:
-          col_to_scale_scaled: NUMBER(38,6)
+          col_to_scale_scaled: BIGNUMERIC
 
       data_k_bins_discretizer_default_bins_expected:
         +column_types:
-          col_to_bin_binned: NUMBER(38,0)
+          col_to_bin_binned: BIGNUMERIC
 
       data_k_bins_discretizer_50_bins_expected:
         +column_types:
-          col_to_bin_binned: NUMBER(38,0)
+          col_to_bin_binned: BIGNUMERIC
 
       data_one_hot_encoder_expected:
         +column_types:
@@ -59,8 +59,8 @@ seeds:
 
       data_quantile_transformer_expected:
         +column_types:
-          col_to_transform_transformed: NUMBER(38,6)
+          col_to_transform_transformed: BIGNUMERIC
 
       data_quantile_transformer:
         +column_types:
-          col_to_transform: NUMBER(38,6)
+          col_to_transform: BIGNUMERIC
