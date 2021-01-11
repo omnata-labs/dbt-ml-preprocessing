@@ -25,7 +25,7 @@ To use this in your dbt project, create or modify packages.yml to include:
 ```
 packages:
   - git: "https://github.com/omnata-pty-ltd/dbt-ml-preprocessing.git"
-    revision: 0.2.0
+    revision: 0.3.0
 ```
 _(replace the revision number with the latest)_
 
