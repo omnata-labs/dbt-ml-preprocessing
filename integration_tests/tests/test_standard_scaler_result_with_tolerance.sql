@@ -1,6 +1,3 @@
--- Because of the floating point arithmetic, the values do not 
--- end up exactly the same as those output from python
-
 with a as (
 
     select * from {{ ref('test_standard_scaler') }}
@@ -22,4 +19,6 @@ joined as(
   join b on a.id_col=b.id_col
 )
 select * from joined
+-- The reason we tolerate tiny differences here is because of the floating point arithmetic, 
+-- the values do not end up exactly the same as those output from python
 where pc_difference > 0.00000001
