@@ -6,6 +6,6 @@ select
 {% for column in include_columns %}
 {{ source_table }}.{{ column }},
 {% endfor %}
-{{ source_column }} / max_abs_value AS {{ source_column }}_SCALED
+{{ source_column }} / max_abs_value AS {{ source_column }}_scaled
 from aggregates,{{ source_table }}
 {% endmacro %}

@@ -26,7 +26,7 @@ linear_interpolation_variables as(
 )
 select
 {{include_columns}},
-coalesce(y1 + ((x-x1)/(x2-x1)) * (y2-y1),0) as {{ source_column }}_TRANSFORMED
+coalesce(y1 + ((x-x1)/(x2-x1)) * (y2-y1),0) as {{ source_column }}_transformed
 from linear_interpolation_variables
 {% endmacro %}
 

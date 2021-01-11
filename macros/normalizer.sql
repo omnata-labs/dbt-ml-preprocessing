@@ -19,7 +19,7 @@ with magnitude_calcs as (
 select 
 {{include_columns}},
 {% for source_column in source_columns %}
-iff(magnitude_calc=0,0,{{ source_column }}/magnitude_calc) as {{ source_column }}_NORMALIZED
+iff(magnitude_calc=0,0,{{ source_column }}/magnitude_calc) as {{ source_column }}_normalized
 {% if not loop.last %}, {% endif %}
 {% endfor %}
 from magnitude_calcs

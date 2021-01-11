@@ -21,7 +21,7 @@ select
 {% endfor %}
 {# The Snowflake implementation of width_bucket adds an extra bucket index to the end, we undo this
    to preserve the scikit-learn behaviour #}
-least(width_bucket({{ source_column }},min_value,max_value,{{ n_bins }}) - 1,{{ n_bins - 1 }}) as {{ source_column }}_BINNED
+least(width_bucket({{ source_column }},min_value,max_value,{{ n_bins }}) - 1,{{ n_bins - 1 }}) as {{ source_column }}_binned
 from aggregates,{{ source_table }}
 {% endmacro %}
 

@@ -6,7 +6,7 @@ select
 {% for column in include_columns %}
 {{ source_table }}.{{ column }},
 {% endfor %}
-array_position({{ source_column }}::variant,all_values_array) as {{ source_column }}_ENCODED
+array_position({{ source_column }}::variant,all_values_array) as {{ source_column }}_encoded
 from distinct_values,{{ source_table }}
 {% endmacro %}
 

@@ -1,0 +1,37 @@
+version: 2
+
+macros:
+  - name: k_bins_discretizer
+    description: |
+      Bin continuous data into intervals. See scikit-learn's [KBinsDiscretizer](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.KBinsDiscretizer.html#sklearn.preprocessing.KBinsDiscretizer) for full documentation.
+
+      Will append a new column with the name <source column>_binned
+
+      Example usage:
+      #### **`models\customer_features.yml:`**
+      ```
+      {{ '{{' }} config(materialized='view') {{ '}}' }}
+
+      {{ '{{' }} dbt_ml_preprocessing.k_bins_discretizer( ref('customer') ,'age') {{ '}}' }}
+
+      ```
+      Will produce a model named customer_features, with a new column named ```age_binned``` containing the binned values
+    arguments:
+      - name: source_table
+        type: string
+        description: Pass in a ref to the table containing the data you want to transform
+      - name: source_column
+        type: string
+        description: The column containing the data you want to transform
+      - name: include_columns
+        type: string
+        description: Other columns from the source table to be included in the model (defaults to '*' and brings all columns across)
+      - name: n_bins
+        type: string
+        description: The number of bins to produce
+      - name: encode
+        type: string
+        description: The method used to encode the result, currently only 'ordinal' is supported
+      - name: strategy
+        type: string
+        description: Strategy used to define the widths of the bins, currently only 'uniform' is supported

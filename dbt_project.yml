@@ -3,6 +3,8 @@ version: '0.1.0'
 
 require-dbt-version: ">=0.15.1"
 
+profile: "integration_tests"
+
 source-paths: ["models"]
 target-path: "target"
 clean-targets: ["target", "dbt_modules"]
