@@ -12,6 +12,12 @@
         {% set results_list = [] %}
     {% endif %}
 {%- endif -%}
+{%- if handle_unknown!='ordinal' -%}
+    {% set error_message %}
+The `one_hot_encoder` macro only supports an 'handle_unknown' value of 'ignore' at this time.
+    {% endset %}
+    {%- do exceptions.raise_compiler_error(error_message) -%}
+{%- endif -%}
 
 select 
 {% for column in include_columns %}

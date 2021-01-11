@@ -1,0 +1,34 @@
+version: 2
+
+macros:
+  - name: robust_scaler
+    description: |
+      Scale features using statistics that are robust to outliers. See scikit-learn's [RobustScaler](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.RobustScaler.html#sklearn.preprocessing.RobustScaler) for full documentation.
+
+      Will append a new column with the name &lt;source column&gt;_scaled.
+
+      Example usage:
+      #### **`models\customer_features.yml:`**
+      ```
+      {{ '{{' }} config(materialized='view') {{ '}}' }}
+
+      {{ '{{' }} dbt_ml_preprocessing.robust_scaler( ref('customer') ,'age') {{ '}}' }}
+
+      ```
+      Will produce a model named customer_features, with a new column named ```age_scaled``` containing the scaled values.
+    arguments:
+      - name: source_table
+        type: string
+        description: Pass in a ref to the table containing the data you want to transform
+      - name: source_column
+        type: string
+        description: The column containing the data you want to transform
+      - name: include_columns
+        type: string
+        description: Other columns from the source table to be included in the model (defaults to '*' and brings all columns across)
+      - name: with_centering
+        type: string
+        description: If True, center the data before scaling. Only supports the default value of 'False' at this time.
+      - name: quantile_range
+        type: string
+        description: Quantile range, must be a two-item array containing the first quartile threshold and the third quartile threshold. Defaults to Interquartile Range, which is [25,75]

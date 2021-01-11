@@ -1,4 +1,4 @@
-{% macro quantile_transformer(source_table,source_column,n_quantiles=10,output_distribution='uniform',ignore_implicit_zeros=False,subsample=1000,include_columns='*') %}
+{% macro quantile_transformer(source_table,source_column,n_quantiles=10,output_distribution='uniform',subsample=1000,include_columns='*') %}
 {%- if include_columns=='*' -%}
 {%- set all_source_columns = adapter.get_columns_in_relation(source_table) | map(attribute='quoted') -%}
 {% set include_columns = all_source_columns | join(', ') %}

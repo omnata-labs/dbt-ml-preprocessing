@@ -25,8 +25,16 @@ To use this in your dbt project, create or modify packages.yml to include:
 ```
 packages:
   - git: "https://github.com/omnata-pty-ltd/dbt-ml-preprocessing.git"
-    revision: 0.1.0
+    revision: 0.2.0
 ```
 _(replace the revision number with the latest)_
 
+Then run:
+```dbt deps``` to import the package.
+
 ## Usage
+The macros are all designed to build an entire model, not just part of it. It would be too complex, and probably impossible to design as a single column macro.
+
+To read their documentation and see examples, simply run [generate your docs](https://docs.getdbt.com/reference/commands/cmd-docs/), and you'll see macro documentation in the Projects tree under ```dbt_ml_preprocessing```.
+
+

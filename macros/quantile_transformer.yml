@@ -1,0 +1,37 @@
+version: 2
+
+macros:
+  - name: quantile_transformer
+    description: |
+      Transform features using quantiles information. See scikit-learn's [QuantileTransformer](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.QuantileTransformer.html#sklearn.preprocessing.QuantileTransformer) for full documentation.
+
+      Will append a new column with the name &lt;source column&gt;_transformed.
+
+      Example usage:
+      #### **`models\customer_features.yml:`**
+      ```
+      {{ '{{' }} config(materialized='view') {{ '}}' }}
+
+      {{ '{{' }} dbt_ml_preprocessing.quantile_transformer( ref('customer') ,'age') {{ '}}' }}
+
+      ```
+      Will produce a model named customer_features, with a new column named ```age_transformed``` containing the encoded values.
+    arguments:
+      - name: source_table
+        type: string
+        description: Pass in a ref to the table containing the data you want to transform
+      - name: source_column
+        type: string
+        description: The column containing the data you want to transform
+      - name: include_columns
+        type: string
+        description: Other columns from the source table to be included in the model (defaults to '*' and brings all columns across)
+      - name: n_quantiles
+        type: string
+        description: Number of quantiles to be computed, defaults to 10.
+      - name: output_distribution
+        type: string
+        description: Marginal distribution for the transformed data. Only supports the default value of 'uniform' at this time.
+      - name: subsample
+        type: string
+        description: Maximum number of samples used to estimate the quantiles for computational efficiency, defaults to 1000.
