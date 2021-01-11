@@ -33,8 +33,6 @@ Then run:
 ```dbt deps``` to import the package.
 
 ## Usage
-The macros are all designed to build an entire model, not just part of it. It would be too complex, and probably impossible to design as a single column macro.
-
-To read their documentation and see examples, simply run [generate your docs](https://docs.getdbt.com/reference/commands/cmd-docs/), and you'll see macro documentation in the Projects tree under ```dbt_ml_preprocessing```.
+To read the macro documentation and see examples, simply run [generate your docs](https://docs.getdbt.com/reference/commands/cmd-docs/), and you'll see macro documentation in the Projects tree under ```dbt_ml_preprocessing```.
 
 
