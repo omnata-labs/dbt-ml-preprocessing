@@ -1,7 +1,7 @@
 {% macro standard_scaler(source_table,source_column,include_columns='*',with_mean=True) %}
 {%- if with_mean!=True -%}
     {% set error_message %}
-The `robust_scaler` macro only supports a 'with_mean' value of 'True' at this time.
+The `standard_scaler` macro only supports a 'with_mean' value of 'True' at this time.
     {% endset %}
     {%- do exceptions.raise_compiler_error(error_message) -%}
 {%- endif -%}
