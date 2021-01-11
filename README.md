@@ -1,13 +1,12 @@
 # dbt-ml-preprocessing
 
-Example
+A plugin for dbt, to enable standardization of data sets.
 
-with aggregates as (
-  select max(abs(WS_LIST_PRICE)) as max_abs_dep
-  from WEB_SALES)
-select WS_LIST_PRICE,max_abs_dep,WS_LIST_PRICE / max_abs_dep AS WS_LIST_PRICE_SCALED
-from aggregates,WEB_SALES
+The plugin contains a set of macros that mirror the functionality of the [scikit-learn preprocessing module](https://scikit-learn.org/stable/modules/preprocessing.html).
 
+The macros are:
 
-select {{ max_abs_scaler({{ ref('the_table') }},'WS_LIST_PRICE') }}
-from ref('the_table')
+| Name | scikit-learn function | Snowflake |
+| ---- | --------------------- |           |
+| k_bins_discretizer | KBinsDiscretizer | yes |
+

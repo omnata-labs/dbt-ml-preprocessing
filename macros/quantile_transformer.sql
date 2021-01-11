@@ -10,13 +10,13 @@ with quantile_values as(
   union all
   -- generate 10 percentile values (10% increments) and for each, determine the maximum value that  
   -- will divide the dataset row counts by that percentage
-  select quantile,max(case when rownum/numrows <= quantile then {{ source_column }} end) as quantile_value
+  select quantile,max(case when (rownum-1)/numrows <= quantile then {{ source_column }} end) as quantile_value
   from 
   (
     select 
-    row_number() over (partition by null order by null) -1 as seq,
-    {{ n_quantiles/100 }}+(seq/{{ n_quantiles }}) as quantile
-    from table(generator(rowcount => {{ n_quantiles }})) v 
+    row_number() over (partition by null order by null) as seq,
+    seq/{{ n_quantiles-1 }} as quantile
+    from table(generator(rowcount => {{ n_quantiles-1 }})) v 
     order by 1
   ) quantiles
   ,
