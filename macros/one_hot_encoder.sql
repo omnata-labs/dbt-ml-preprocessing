@@ -12,7 +12,7 @@
         {% set results_list = [] %}
     {% endif %}
 {%- endif -%}
-{%- if handle_unknown!='ordinal' -%}
+{%- if handle_unknown!='ignore' -%}
     {% set error_message %}
 The `one_hot_encoder` macro only supports an 'handle_unknown' value of 'ignore' at this time.
     {% endset %}
