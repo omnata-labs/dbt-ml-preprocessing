@@ -5,30 +5,11 @@
 {%- endif -%}
 
 with quantile_values as(
-  -- Make a 0-percentile row containing the minimum value (i.e. 100% of values fall to its right)
-  select 0 as quantile,(select min({{ source_column }}) from {{ source_table }}) as quantile_value
-  union all
-  -- generate 10 percentile values (10% increments) and for each, determine the maximum value that  
-  -- will divide the dataset row counts by that percentage
-  select quantile,max(case when (rownum-1)/numrows <= quantile then {{ source_column }} end) as quantile_value
-  from 
-  (
-    select 
-    row_number() over (partition by null order by null) as seq,
-    seq/{{ n_quantiles-1 }} as quantile
-    from table(generator(rowcount => {{ n_quantiles-1 }})) v 
-    order by 1
-  ) quantiles
-  ,
-  (
-    select {{ source_column }},
-      row_number() over (partition by NULL order by {{ source_column }}) as rownum,
-      count(*) over (partition by NULL) as numrows
-    from {{ source_table }} sample({{ subsample }} rows)
-    where {{ source_column }} is not null
-  ) totals
-  group by quantile
-  order by quantile_value
+  {% for quartile_index in range(n_quantiles) %}
+    {% set quartile = quartile_index / (n_quantiles-1) %}
+    select {{ quartile }} as quantile,percentile_cont({{ quartile }})  within group (order by {{ source_column }})as quantile_value from {{ source_table }}
+    {% if not loop.last %} union all {% endif %}
+  {% endfor %}
 ),
 -- prepare to apply linear interpolation formula
 linear_interpolation_variables as(
