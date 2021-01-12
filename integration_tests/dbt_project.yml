@@ -28,27 +28,27 @@ seeds:
     sql:
       data_max_abs_scaler_expected:
         +column_types:
-          col_to_scale_scaled: BIGNUMERIC
+          col_to_scale_scaled: "{{ 'BIGNUMERIC' if 'project' in target else 'NUMBER(38,6)' }}" # This is a bit of a hack to ensure the decimals load correctly into Bigquery
 
       data_max_abs_scaler_with_column_selection_expected:
         +column_types:
-          col_to_scale_scaled: BIGNUMERIC
+          col_to_scale_scaled: "{{ 'BIGNUMERIC' if 'project' in target else 'NUMBER(38,6)' }}"
 
       data_min_max_scaler_expected:
         +column_types:
-          col_to_scale_scaled: BIGNUMERIC
+          col_to_scale_scaled: "{{ 'BIGNUMERIC' if 'project' in target else 'NUMBER(38,6)' }}"
 
       data_min_max_scaler_with_column_selection_expected:
         +column_types:
-          col_to_scale_scaled: BIGNUMERIC
+          col_to_scale_scaled: "{{ 'BIGNUMERIC' if 'project' in target else 'NUMBER(38,6)' }}"
 
       data_k_bins_discretizer_default_bins_expected:
         +column_types:
-          col_to_bin_binned: BIGNUMERIC
+          col_to_bin_binned: "{{ 'BIGNUMERIC' if 'project' in target else 'NUMBER(38,6)' }}"
 
       data_k_bins_discretizer_50_bins_expected:
         +column_types:
-          col_to_bin_binned: BIGNUMERIC
+          col_to_bin_binned: "{{ 'BIGNUMERIC' if 'project' in target else 'NUMBER(38,6)' }}"
 
       data_one_hot_encoder_expected:
         +column_types:
@@ -59,8 +59,8 @@ seeds:
 
       data_quantile_transformer_expected:
         +column_types:
-          col_to_transform_transformed: BIGNUMERIC
+          col_to_transform_transformed: "{{ 'BIGNUMERIC' if 'project' in target else 'NUMBER(38,6)' }}"
 
       data_quantile_transformer:
         +column_types:
-          col_to_transform: BIGNUMERIC
+          col_to_transform: "{{ 'BIGNUMERIC' if 'project' in target else 'NUMBER(38,6)' }}"
