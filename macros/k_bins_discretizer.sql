@@ -21,7 +21,7 @@ with aggregates as (
   from {{ source_table }})
 select 
 {% for column in include_columns %}
-{{ source_table }}.{{ column }},
+source_table.{{ column }},
 {% endfor %}
 {# The Snowflake implementation of width_bucket adds an extra bucket index to the end, we undo this
    to preserve the scikit-learn behaviour #}
