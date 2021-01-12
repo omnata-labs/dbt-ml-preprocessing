@@ -9,7 +9,7 @@
         {# Return the first column #}
         {% set category_values = results.columns[0].values() %}
     {% else %}
-        {% set results_list = [] %}
+        {% set category_values = [] %}
     {% endif %}
 {%- endif -%}
 {%- if handle_unknown!='ignore' -%}
@@ -18,7 +18,10 @@ The `one_hot_encoder` macro only supports an 'handle_unknown' value of 'ignore' 
     {% endset %}
     {%- do exceptions.raise_compiler_error(error_message) -%}
 {%- endif -%}
+{{ adapter.dispatch('one_hot_encoder',packages=['dbt_ml_preprocessing'])(source_table,source_column,category_values,handle_unknown,include_columns) }}
+{%- endmacro %}
 
+{% macro default__one_hot_encoder(source_table,source_column,category_values,handle_unknown,include_columns) %}
 select 
 {% for column in include_columns %}
 {{ source_table }}.{{ column }},
@@ -28,4 +31,16 @@ iff({{source_column}}='{{category}}',true,false) as {{source_column}}_{{category
 {% if not loop.last %}, {% endif %}
 {% endfor %}
 from {{ source_table }}
-{% endmacro %}
+{%- endmacro %}
+
+{% macro bigquery__one_hot_encoder(source_table,source_column,category_values,handle_unknown,include_columns) %}
+select 
+{% for column in include_columns %}
+{{ column }},
+{% endfor %}
+{% for category in category_values %}
+if({{source_column}}='{{category}}',true,false) as {{source_column}}_{{category}}
+{% if not loop.last %}, {% endif %}
+{% endfor %}
+from {{ source_table }}
+{%- endmacro %}

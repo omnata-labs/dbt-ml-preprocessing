@@ -3,7 +3,10 @@
 {%- set all_source_columns = adapter.get_columns_in_relation(source_table) | map(attribute='quoted') -%}
 {% set include_columns = all_source_columns | join(', ') %}
 {%- endif -%}
+{{ adapter.dispatch('quantile_transformer',packages=['dbt_ml_preprocessing'])(source_table,source_column,n_quantiles,output_distribution,subsample,include_columns) }}
+{% endmacro %}
 
+{% macro snowflake__quantile_transformer(source_table,source_column,n_quantiles,output_distribution,subsample,include_columns) %}
 with quantile_values as(
   {% for quartile_index in range(n_quantiles) %}
     {% set quartile = quartile_index / (n_quantiles-1) %}
@@ -30,3 +33,11 @@ coalesce(y1 + ((x-x1)/(x2-x1)) * (y2-y1),0) as {{ source_column }}_transformed
 from linear_interpolation_variables
 {% endmacro %}
 
+{% macro default__quantile_transformer(source_table,source_column,n_quantiles,output_distribution,subsample,include_columns) %}
+
+{% set error_message %}
+The `quantile_transformer` macro is only supported on Snowflake at this time. It should work on other DBs, it just requires some rework.
+{% endset %}
+{%- do exceptions.raise_compiler_error(error_message) -%}
+
+{% endmacro %}

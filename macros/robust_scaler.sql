@@ -16,13 +16,29 @@ The `robust_scaler` macro only supports a 'quantile_range' value with exactly tw
 {%- set all_source_columns = adapter.get_columns_in_relation(source_table) | map(attribute='quoted') -%}
 {% set include_columns = all_source_columns | join(', ') %}
 {%- endif -%}
+{{ adapter.dispatch('robust_scaler',packages=['dbt_ml_preprocessing'])(source_table,source_column,include_columns,with_centering,quantile_range) }}
+{% endmacro %}
 
+{% macro default__robust_scaler(source_table,source_column,include_columns,with_centering,quantile_range) %}
 with quartiles as (
   select 
   percentile_cont({{ quantile_range[0] / 100 }}) within group (order by {{ source_column }}) as first_quartile,
   percentile_cont({{ quantile_range[1] / 100 }}) within group (order by {{ source_column }}) as third_quartile
   from {{ source_table }}
   group by null
+)
+select 
+    {{include_columns}},
+    ({{ source_column }} / (third_quartile - first_quartile)) as {{ source_column }}_scaled
+from quartiles,{{ source_table }}
+{% endmacro %}
+
+{% macro bigquery__robust_scaler(source_table,source_column,include_columns,with_centering,quantile_range) %}
+with quartiles as (
+  select 
+  percentile_cont({{ source_column }},{{ quantile_range[0] / 100 }}) OVER() as first_quartile,
+  percentile_cont({{ source_column }},{{ quantile_range[1] / 100 }}) OVER() as third_quartile
+  from {{ source_table }}
 )
 select 
     {{include_columns}},
