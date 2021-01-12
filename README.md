@@ -4,7 +4,7 @@ A package for dbt which enables standardization of data sets. You can use it to 
 
 The package contains a set of macros that mirror the functionality of the [scikit-learn preprocessing module](https://scikit-learn.org/stable/modules/preprocessing.html). Originally they were developed as part of the 2019 Medium article [Feature Engineering in Snowflake](https://medium.com/omnata/feature-engineering-in-snowflake-4312032e0d53).
 
-Currently they have only been tested in Snowflake and Bigquery.
+Currently they have only been tested in Snowflake and BigQuery.
 
 The macros are:
 
