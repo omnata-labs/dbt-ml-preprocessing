@@ -33,6 +33,9 @@ Then run:
 ```dbt deps``` to import the package.
 
 ## Usage
-To read the macro documentation and see examples, simply [generate your docs](https://docs.getdbt.com/reference/commands/cmd-docs/), and you'll see macro documentation in the Projects tree under ```dbt_ml_preprocessing```.
+To read the macro documentation and see examples, simply [generate your docs](https://docs.getdbt.com/reference/commands/cmd-docs/), and you'll see macro documentation in the Projects tree under ```dbt_ml_preprocessing```:
+
+![docs screenshot](docs_screenshot.png)
+
 
 
