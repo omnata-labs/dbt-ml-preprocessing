@@ -1,4 +1,4 @@
-{{ config(materialized='view') }}
+{{ config(materialized='table') }} -- as a table because Redshift can't handle the equality checker query when it's a view
 
 with data as (
 

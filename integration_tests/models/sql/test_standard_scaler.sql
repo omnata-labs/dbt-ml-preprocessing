@@ -6,4 +6,4 @@ with data as (
 
 )
 
-select * from data
+select id_col,col_to_scale,round(col_to_scale_scaled,10) as col_to_scale_scaled from data
