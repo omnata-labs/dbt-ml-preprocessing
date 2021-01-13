@@ -20,7 +20,7 @@ The macros are:
 | [RobustScaler](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.RobustScaler.html#sklearn.preprocessing.RobustScaler) | robust_scaler | Y | Y | Y | [![example](images/robust_scaler.png)](https://scikit-learn.org/stable/auto_examples/preprocessing/plot_all_scaling.html#robustscaler) |
 | [StandardScaler](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler) | standard_scaler | Y | Y | Y | [![example](images/standard_scaler.png)](https://scikit-learn.org/stable/auto_examples/preprocessing/plot_all_scaling.html#standardscaler) |
 
-\* 2D charts taken from [scikit-learn.org](https://scikit-learn.org/stable/auto_examples/preprocessing/plot_all_scaling.html), GIFs are my own.
+_\* 2D charts taken from [scikit-learn.org](https://scikit-learn.org/stable/auto_examples/preprocessing/plot_all_scaling.html), GIFs are my own_
 ## Installation
 To use this in your dbt project, create or modify packages.yml to include:
 ```
