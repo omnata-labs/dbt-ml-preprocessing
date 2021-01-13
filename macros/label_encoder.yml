@@ -26,3 +26,15 @@ macros:
       - name: include_columns
         type: string
         description: Other columns from the source table to be included in the model (defaults to '*' and brings all columns across)
+
+  - name: bigquery__label_encoder
+    docs:
+      show: false
+
+  - name: redshift__label_encoder
+    docs:
+      show: false
+
+  - name: default__label_encoder
+    docs:
+      show: false

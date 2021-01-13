@@ -35,3 +35,15 @@ macros:
       - name: strategy
         type: string
         description: Strategy used to define the widths of the bins, currently only 'uniform' is supported
+
+  - name: bigquery__k_bins_discretizer
+    docs:
+      show: false
+
+  - name: snowflake__k_bins_discretizer
+    docs:
+      show: false
+
+  - name: default__k_bins_discretizer
+    docs:
+      show: false

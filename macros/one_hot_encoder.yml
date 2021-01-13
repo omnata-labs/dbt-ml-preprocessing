@@ -32,3 +32,11 @@ macros:
       - name: handle_unknown
         type: string
         description: Whether to raise an error or ignore if an unknown categorical feature is present during transform. Only supports the default value of 'ignore' at this time.
+
+  - name: default__one_hot_encoder
+    docs:
+      show: false
+
+  - name: snowflake__one_hot_encoder
+    docs:
+      show: false

@@ -26,3 +26,11 @@ macros:
       - name: include_columns
         type: string
         description: Other columns from the source table to be included in the model (defaults to '*' and brings all columns across)
+
+  - name: default__normalizer
+    docs:
+      show: false
+
+  - name: snowflake__normalizer
+    docs:
+      show: false

@@ -32,3 +32,15 @@ macros:
       - name: quantile_range
         type: string
         description: Quantile range, must be a two-item array containing the first quartile threshold and the third quartile threshold. Defaults to Interquartile Range, which is [25,75]
+
+  - name: bigquery__robust_scaler
+    docs:
+      show: false
+
+  - name: default__robust_scaler
+    docs:
+      show: false
+
+  - name: redshift__robust_scaler
+    docs:
+      show: false

@@ -35,3 +35,11 @@ macros:
       - name: subsample
         type: string
         description: Maximum number of samples used to estimate the quantiles for computational efficiency, defaults to 1000.
+
+  - name: default__quantile_transformer
+    docs:
+      show: false
+
+  - name: snowflake__quantile_transformer
+    docs:
+      show: false
