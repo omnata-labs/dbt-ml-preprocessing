@@ -33,11 +33,42 @@ coalesce(y1 + ((x-x1)/(x2-x1)) * (y2-y1),0) as {{ source_column }}_transformed
 from linear_interpolation_variables
 {% endmacro %}
 
+{% macro bigquery__quantile_transformer(source_table,source_column,n_quantiles,output_distribution,subsample,include_columns) %}
+with quantile_values as(
+  {% for quartile_index in range(n_quantiles) %}
+    {% set quartile = quartile_index / (n_quantiles-1) %}
+    select distinct {{ quartile }} as quantile,percentile_cont({{ source_column }},{{ quartile }}) OVER() as quantile_value from {{ source_table }}
+    {% if not loop.last %} union all {% endif %}
+  {% endfor %}
+),
+-- fold all quantiles and quantile values into a single row, an array of structs that we can safely cross join on
+quantile_values_array as(
+select ARRAY_AGG(struct (quantile, quantile_value)) as quantile_values from quantile_values
+),
+-- prepare to apply linear interpolation formula
+linear_interpolation_variables as(
+  select 
+    {{include_columns}},
+    {{ source_column }} as x,
+    (select max(b.quantile) from UNNEST(quantile_values) b where b.quantile_value<a.{{ source_column }}) as y1,
+    (select min(b.quantile) from UNNEST(quantile_values) b where b.quantile_value>=a.{{ source_column }}) as y2,
+    (select max(b.quantile_value) from UNNEST(quantile_values) b where b.quantile_value<a.{{ source_column }}) as x1,
+    (select min(b.quantile_value) from UNNEST(quantile_values) b where b.quantile_value>=a.{{ source_column }}) as x2
+  from {{ source_table }} a,
+  quantile_values_array
+  where {{ source_column }} is not null
+  order by {{ source_column }}
+)
+select
+{{include_columns}},
+coalesce(y1 + ((x-x1)/(x2-x1)) * (y2-y1),0) as {{ source_column }}_transformed
+from linear_interpolation_variables
+{% endmacro %}
+
 {% macro default__quantile_transformer(source_table,source_column,n_quantiles,output_distribution,subsample,include_columns) %}
 
 {% set error_message %}
-The `quantile_transformer` macro is only supported on Snowflake at this time. It should work on other DBs, it just requires some rework.
+The `quantile_transformer` macro is only supported on Snowflake and BigQuery at this time. It should work on other DBs, it just requires some rework.
 {% endset %}
 {%- do exceptions.raise_compiler_error(error_message) -%}
-
 {% endmacro %}
