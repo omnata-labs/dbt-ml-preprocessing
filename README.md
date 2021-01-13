@@ -4,7 +4,7 @@ A package for dbt which enables standardization of data sets. You can use it to 
 
 The package contains a set of macros that mirror the functionality of the [scikit-learn preprocessing module](https://scikit-learn.org/stable/modules/preprocessing.html). Originally they were developed as part of the 2019 Medium article [Feature Engineering in Snowflake](https://medium.com/omnata/feature-engineering-in-snowflake-4312032e0d53).
 
-Currently they have been tested in Snowflake, Redshift and BigQuery.
+Currently they have been tested in Snowflake, Redshift and BigQuery. The test case expectations have been built using scikit-learn (see *.py in [integration_tests/data/sql](integration_tests/data/sql)), so you can expect behavioural parity with it.
 
 The macros are:
 
@@ -33,6 +33,6 @@ Then run:
 ```dbt deps``` to import the package.
 
 ## Usage
-To read the macro documentation and see examples, simply run [generate your docs](https://docs.getdbt.com/reference/commands/cmd-docs/), and you'll see macro documentation in the Projects tree under ```dbt_ml_preprocessing```.
+To read the macro documentation and see examples, simply [generate your docs](https://docs.getdbt.com/reference/commands/cmd-docs/), and you'll see macro documentation in the Projects tree under ```dbt_ml_preprocessing```.
 
 
