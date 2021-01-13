@@ -32,3 +32,20 @@ source_table.{{ column }},
 (select offset from distinct_values_unnested where element={{ source_column }}) as {{ source_column }}_encoded
 from distinct_values,{{ source_table }} as source_table
 {% endmacro %}
+
+{% macro redshift__label_encoder(source_table,source_column,include_columns) %}
+with distinct_values as (
+    select distinct {{ source_column }} as distinct_value 
+    from {{ source_table }}
+),
+numbered_distinct_values as(
+  select distinct_value,
+  row_number() over (order by distinct_value) - 1 as row_num
+  from distinct_values)
+select 
+{% for column in include_columns %}
+{{ source_table }}.{{ column }},
+{% endfor %}
+(select row_num from numbered_distinct_values where distinct_value={{ source_column }}) as {{ source_column }}_encoded
+from {{ source_table }}
+{% endmacro %}

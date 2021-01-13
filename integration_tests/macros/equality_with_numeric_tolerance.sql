@@ -82,3 +82,36 @@ from joined
 -- the values do not end up exactly the same as those output from python
 where percent_difference > {{ percentage_tolerance }}
 {% endmacro %}
+
+{% macro redshift__test_equality_with_numeric_tolerance(model,compare_model,source_join_column,target_join_column,source_numeric_column_name,target_numeric_column_name,percentage_tolerance,output_all_rows=False) %}
+{% set compare_cols_csv = compare_columns | join(', ') %}
+with a as (
+    select * from {{ model }}
+),
+b as (
+    select * from {{ compare_model }}
+),
+joined as(
+    select a.*,
+        b.{{ target_numeric_column_name }},
+        a.{{ source_numeric_column_name }}-b.{{ target_numeric_column_name }} as difference,
+        case 
+            when (a.{{ source_numeric_column_name }}-b.{{ target_numeric_column_name }})>0
+            then
+            (a.{{ source_numeric_column_name }}-b.{{ target_numeric_column_name }})/b.{{ target_numeric_column_name }}
+            else 0
+            end
+        *100 as percent_difference
+  from a
+  join b on a.{{ source_join_column }}=b.{{ target_join_column }}
+)
+select {% if output_all_rows %}
+        *
+       {% else %}
+       count(*) 
+       {% endif %}
+from joined
+-- The reason we tolerate tiny differences here is because of the floating point arithmetic, 
+-- the values do not end up exactly the same as those output from python
+where percent_difference > {{ percentage_tolerance }}
+{% endmacro %}

@@ -45,3 +45,16 @@ select
     ({{ source_column }} / (third_quartile - first_quartile)) as {{ source_column }}_scaled
 from quartiles,{{ source_table }}
 {% endmacro %}
+
+{% macro redshift__robust_scaler(source_table,source_column,include_columns,with_centering,quantile_range) %}
+with quartiles as (
+  select 
+  percentile_cont({{ quantile_range[0] / 100 }}) within group (order by {{ source_column }}) as first_quartile,
+  percentile_cont({{ quantile_range[1] / 100 }}) within group (order by {{ source_column }}) as third_quartile
+  from {{ source_table }}
+)
+select 
+    {{include_columns}},
+    ({{ source_column }} / (third_quartile - first_quartile)) as {{ source_column }}_scaled
+from quartiles,{{ source_table }}
+{% endmacro %}

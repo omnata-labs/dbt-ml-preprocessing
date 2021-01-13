@@ -21,7 +21,7 @@ The `one_hot_encoder` macro only supports an 'handle_unknown' value of 'ignore' 
 {{ adapter.dispatch('one_hot_encoder',packages=['dbt_ml_preprocessing'])(source_table,source_column,category_values,handle_unknown,include_columns) }}
 {%- endmacro %}
 
-{% macro default__one_hot_encoder(source_table,source_column,category_values,handle_unknown,include_columns) %}
+{% macro snowflake__one_hot_encoder(source_table,source_column,category_values,handle_unknown,include_columns) %}
 select 
 {% for column in include_columns %}
 {{ source_table }}.{{ column }},
@@ -33,13 +33,16 @@ iff({{source_column}}='{{category}}',true,false) as {{source_column}}_{{category
 from {{ source_table }}
 {%- endmacro %}
 
-{% macro bigquery__one_hot_encoder(source_table,source_column,category_values,handle_unknown,include_columns) %}
+{% macro default__one_hot_encoder(source_table,source_column,category_values,handle_unknown,include_columns) %}
 select 
 {% for column in include_columns %}
 {{ column }},
 {% endfor %}
 {% for category in category_values %}
-if({{source_column}}='{{category}}',true,false) as {{source_column}}_{{category}}
+case {{source_column}}
+    when '{{category}}' then true
+    else false
+    end as {{source_column}}_{{category}}
 {% if not loop.last %}, {% endif %}
 {% endfor %}
 from {{ source_table }}
