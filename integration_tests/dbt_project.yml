@@ -48,11 +48,13 @@ seeds:
 
       data_standard_scaler:
         +column_types:
-          col_to_scale: "{{ 'BIGNUMERIC' if 'project' in target else 'DECIMAL(38,10)' }}"
+          col_to_scale_1: "{{ 'BIGNUMERIC' if 'project' in target else 'DECIMAL(38,10)' }}"
+          col_to_scale_2: "{{ 'BIGNUMERIC' if 'project' in target else 'DECIMAL(38,10)' }}"
 
       data_standard_scaler_expected:
         +column_types:
-          col_to_scale_scaled: "{{ 'BIGNUMERIC' if 'project' in target else 'DECIMAL(38,10)' }}"
+          col_to_scale_1_scaled: "{{ 'BIGNUMERIC' if 'project' in target else 'DECIMAL(38,10)' }}"
+          col_to_scale_2_scaled: "{{ 'BIGNUMERIC' if 'project' in target else 'DECIMAL(38,10)' }}"
 
       data_min_max_scaler_with_column_selection_expected:
         +column_types:
@@ -60,11 +62,12 @@ seeds:
 
       data_k_bins_discretizer_default_bins_expected:
         +column_types:
-          col_to_bin_binned: "{{ 'BIGNUMERIC' if 'project' in target else 'DECIMAL(38,6)' }}"
+          col_to_bin_1_binned: "{{ 'BIGNUMERIC' if 'project' in target else 'DECIMAL(38,6)' }}"
+          col_to_bin_2_binned: "{{ 'BIGNUMERIC' if 'project' in target else 'DECIMAL(38,6)' }}"
 
       data_k_bins_discretizer_50_bins_expected:
         +column_types:
-          col_to_bin_binned: "{{ 'BIGNUMERIC' if 'project' in target else 'DECIMAL(38,6)' }}"
+          col_to_bin_1_binned: "{{ 'BIGNUMERIC' if 'project' in target else 'DECIMAL(38,6)' }}"
 
       data_one_hot_encoder_expected:
         +column_types:
@@ -72,6 +75,11 @@ seeds:
           column_to_encode_B: boolean
           column_to_encode_C: boolean
           column_to_encode_D: boolean
+
+      data_one_hot_encoder_category_selected_expected:
+        +column_types:
+          column_to_encode_A: boolean
+          column_to_encode_B: boolean
 
       data_quantile_transformer_expected:
         +column_types:

@@ -57,8 +57,15 @@ models:
           compare_model: ref('data_standard_scaler_expected')
           source_join_column: id_col
           target_join_column: id_col
-          source_numeric_column_name: col_to_scale_scaled
-          target_numeric_column_name: col_to_scale_scaled
+          source_numeric_column_name: col_to_scale_1_scaled
+          target_numeric_column_name: col_to_scale_1_scaled
+          percentage_tolerance: 0.0000001
+      - equality_with_numeric_tolerance:
+          compare_model: ref('data_standard_scaler_expected')
+          source_join_column: id_col
+          target_join_column: id_col
+          source_numeric_column_name: col_to_scale_2_scaled
+          target_numeric_column_name: col_to_scale_2_scaled
           percentage_tolerance: 0.0000001
 
   - name: test_one_hot_encoder

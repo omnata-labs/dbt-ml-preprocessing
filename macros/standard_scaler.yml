@@ -21,8 +21,8 @@ macros:
         type: string
         description: Pass in a ref to the table containing the data you want to transform
       - name: source_column
-        type: string
-        description: The column containing the data you want to transform
+        type: list
+        description: The columns containing the data you want to transform
       - name: include_columns
         type: string
         description: Other columns from the source table to be included in the model (defaults to '*' and brings all columns across)
