@@ -11,6 +11,13 @@
     {% else %}
         {% set category_values = [] %}
     {% endif %}
+{% elif categories is not iterable or categories is string or categories is mapping %}
+    {% set error_message %}
+The `categories` parameter must contain a list of category values.
+    {% endset %}
+    {%- do exceptions.raise_compiler_error(error_message) -%}
+{%- else -%}
+    {% set category_values = categories %}
 {%- endif -%}
 {%- if handle_unknown!='ignore' -%}
     {% set error_message %}

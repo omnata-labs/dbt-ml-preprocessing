@@ -66,6 +66,11 @@ models:
       - dbt_utils.equality:
           compare_model: ref('data_one_hot_encoder_expected')
 
+  - name: test_one_hot_encoder_category_selected
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_one_hot_encoder_category_selected_expected')
+
   - name: test_robust_scaler
     tests:
       - dbt_utils.equality:
