@@ -36,7 +36,3 @@ macros:
   - name: default__one_hot_encoder
     docs:
       show: false
-
-  - name: snowflake__one_hot_encoder
-    docs:
-      show: false
