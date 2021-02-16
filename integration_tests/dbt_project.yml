@@ -71,15 +71,15 @@ seeds:
 
       data_one_hot_encoder_expected:
         +column_types:
-          column_to_encode_A: boolean
-          column_to_encode_B: boolean
-          column_to_encode_C: boolean
-          column_to_encode_D: boolean
+          is_column_to_encode_A: boolean
+          is_column_to_encode_B: boolean
+          is_column_to_encode_C: boolean
+          is_column_to_encode_D: boolean
 
       data_one_hot_encoder_category_selected_expected:
         +column_types:
-          column_to_encode_A: boolean
-          column_to_encode_B: boolean
+          is_column_to_encode_A: boolean
+          is_column_to_encode_B: boolean
 
       data_quantile_transformer_expected:
         +column_types:
