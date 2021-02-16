@@ -5,7 +5,7 @@ macros:
     description: |
       Encode categorical features as a one-hot numeric array. See scikit-learn's [OneHotEncoder](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html#sklearn.preprocessing.OneHotEncoder) for full documentation.
 
-      Will append a new boolean column for every category present in the data with the name &lt;source column&gt;_&lt;category value&gt;.
+      Will append a new boolean column for every category present in the data with the name is_&lt;source column&gt;_&lt;category value&gt;.
 
       Example usage:
       #### **`models\customer_features.yml:`**
@@ -15,7 +15,7 @@ macros:
       {{ '{{' }} dbt_ml_preprocessing.one_hot_encoder( ref('customer') ,'gender') {{ '}}' }}
 
       ```
-      Will produce a model named customer_features, with a new column named ```gender_encoded``` containing the encoded values.
+      If the column contained values 'male' and 'female, it will produce a model named customer_features with two new boolean columns named ```is_gender_mail``` and ```is_gender_female```.
     arguments:
       - name: source_table
         type: string
