@@ -1,4 +1,4 @@
-{% macro one_hot_encoder(source_table, source_column, categories='auto', handle_unknown='ignore', drop_col=none, value=none) %}
+{% macro one_hot_encoder(source_table, source_column, categories='auto', handle_unknown='ignore',include_columns='*', exclude_columns=none) %}
 
     {%- if categories=='auto' -%}
         {% set category_values_query %}
@@ -29,29 +29,30 @@
         {% endset %}
         {%- do exceptions.raise_compiler_error(error_message) -%}
     {%- endif -%}
-    {{ adapter.dispatch('one_hot_encoder',packages=['dbt_ml_preprocessing'])(source_table, source_column, category_values, handle_unknown, drop_col, value) }}
+    {%- if include_columns!='*' and exclude_columns=none -%}
+        {% set error_message %}
+    The `one_hot_encoder` macro only supports one of include_columns and exclude_columns being a non-default value.
+        {% endset %}
+        {%- do exceptions.raise_compiler_error(error_message) -%}
+    {%- endif -%}
+    {{ adapter.dispatch('one_hot_encoder',packages=['dbt_ml_preprocessing'])(source_table, source_column, category_values, handle_unknown, include_columns, exclude_columns) }}
 {%- endmacro %}
 
-{% macro default__one_hot_encoder(source_table, source_column, category_values, handle_unknown, drop_col, value) %}
+{% macro default__one_hot_encoder(source_table, source_column, category_values, handle_unknown, include_columns, exclude_columns) %}
     {% set columns = adapter.get_columns_in_relation( source_table ) %}
 
     with binary_output as (
     select
-        {% for column in columns %}
-            {%- if column.name | lower != source_column | lower %}
+        {% for column in include_columns %}
+            {% if exclude_columns is none or column not in exclude_columns %}
+                {%- if column.name | lower != source_column | lower %}
                 {{ column.name }},
+                {%- endif -%}
             {%- endif -%}
         {%- endfor -%}
-            {% if drop_col is none or not drop_col%}
-                {{ source_column }},
-            {%- endif -%}
         {%- for category in category_values -%}
             {% set no_whitespace_column_name = category | replace( " ", "_") -%}
-                {%- if value is not none and value | lower  in columns | lower %}
-                    case when {{ source_column }} = '{{ category }}' then {{ value }} else null end as is_{{ source_column }}_{{ no_whitespace_column_name }}
-                {% else %}
-                    case when {{ source_column }} = '{{ category }}' then 1 else 0 end as is_{{ source_column }}_{{ no_whitespace_column_name }}
-                {%- endif -%}
+                case when {{ source_column }} = '{{ category }}' then 1 else 0 end as is_{{ source_column }}_{{ no_whitespace_column_name }}
             {%- if not loop.last %},{% endif -%}
         {% endfor %}
     from {{ source_table }}
