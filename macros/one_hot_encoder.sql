@@ -43,12 +43,14 @@
 
     with binary_output as (
     select
-        {% for column in include_columns %}
-            {% if exclude_columns is none %}
-                {{ column.name }},
-            {% else %}
-                {%- if column.name | lower not in exclude_columns | lower %}
+        {% for column in columns %}
+            {% if column in include_columns %}
+                {% if exclude_columns is none %}
                     {{ column.name }},
+                {% else %}
+                    {%- if column.name | lower not in exclude_columns | lower %}
+                        {{ column.name }},
+                    {%- endif -%}
                 {%- endif -%}
             {%- endif -%}
         {%- endfor -%}
