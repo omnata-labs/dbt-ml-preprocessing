@@ -46,7 +46,6 @@
         {% for column in include_columns %}
             {% if exclude_columns is none %}
                 {{ column.name }},
-            {%- endif -%}
             {% else %}
                 {%- if column.name | lower not in exclude_columns | lower %}
                     {{ column.name }},
