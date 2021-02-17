@@ -29,7 +29,7 @@
         {% endset %}
         {%- do exceptions.raise_compiler_error(error_message) -%}
     {%- endif -%}
-    {%- if include_columns!='*' and exclude_columns=none -%}
+    {%- if include_columns!='*' and exclude_columns is not none -%}
         {% set error_message %}
     The `one_hot_encoder` macro only supports one of include_columns and exclude_columns being a non-default value.
         {% endset %}
