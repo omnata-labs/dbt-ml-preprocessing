@@ -44,13 +44,16 @@
     with binary_output as (
     select
         {% for column in include_columns %}
-            {% if exclude_columns is none or column not in exclude_columns %}
-                {%- if column.name | lower != source_column | lower %}
+            {% if exclude_columns is none %}
                 {{ column.name }},
+            {%- endif -%}
+            {% else %}
+                {%- if column.name | lower not in exclude_columns | lower %}
+                    {{ column.name }},
                 {%- endif -%}
             {%- endif -%}
         {%- endfor -%}
-        {%- for category in category_values -%}
+        {% for category in category_values %}
             {% set no_whitespace_column_name = category | replace( " ", "_") -%}
                 case when {{ source_column }} = '{{ category }}' then 1 else 0 end as is_{{ source_column }}_{{ no_whitespace_column_name }}
             {%- if not loop.last %},{% endif -%}
