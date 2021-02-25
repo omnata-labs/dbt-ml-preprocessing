@@ -32,17 +32,17 @@
     {%- if include_columns!='*' or exclude_columns is not none -%}
         {%- if include_columns!='*' and exclude_columns is not none -%}
             {% set error_message %}
-        1 Fail here. The `one_hot_encoder` macro only supports one of include_columns and exclude_columns being a non-default value or one of them being a list.
+        The `one_hot_encoder` macro only supports one of include_columns and exclude_columns being a non-default value or one of them being a list.
             {% endset %}
             {%- do exceptions.raise_compiler_error(error_message) -%}
         {%- elif include_columns!='*' and (include_columns is not iterable  or include_columns is string or include_columns is mapping) -%}
             {% set error_message %}
-        2 Fail hereThe `one_hot_encoder` macro only supports one of include_columns and exclude_columns being a non-default value or one of them being a list.
+        The `one_hot_encoder` macro only supports one of include_columns and exclude_columns being a non-default value or one of them being a list.
             {% endset %}
             {%- do exceptions.raise_compiler_error(error_message) -%}
         {%- elif exclude_columns is not none and (exclude_columns is not iterable or exclude_columns is string or exclude_columns is mapping) -%}
                     {% set error_message %}
-        3 Fail here. The `one_hot_encoder` macro only supports one of include_columns and exclude_columns being a non-default value or one of them being a list.
+        The `one_hot_encoder` macro only supports one of include_columns and exclude_columns being a non-default value or one of them being a list.
             {% endset %}
             {%- do exceptions.raise_compiler_error(error_message) -%}
         {%- endif -%}
