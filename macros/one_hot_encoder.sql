@@ -63,9 +63,7 @@
                 {{ column.name }},
             {%- endfor -%}
         {%- elif include_columns !='*'-%}
-            {{ log("Column: " ~ include_columns, info=true) }}
             {% for column in include_columns %}
-                {{ log("Column in loop: " ~ column.name, info=true) }}
                 {{ source_table }}.{{ column }},
             {%- endfor -%}
         {%- else -%}
