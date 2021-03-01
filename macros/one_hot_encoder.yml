@@ -15,7 +15,9 @@ macros:
       {{ '{{' }} dbt_ml_preprocessing.one_hot_encoder( ref('customer') ,'gender') {{ '}}' }}
 
       ```
-      If the column contained values 'male' and 'female, it will produce a model named customer_features with two new boolean columns named ```is_gender_mail``` and ```is_gender_female```.
+      If the column contained values 'male' and 'female, it will produce a model named customer_features with two new boolean columns named ```is_gender_male``` and ```is_gender_female```.
+      
+      Any spaces in the category values will be replaced with underscores, for ease of querying.
     arguments:
       - name: source_table
         type: string
@@ -26,12 +28,15 @@ macros:
       - name: include_columns
         type: string
         description: Other columns from the source table to be included in the model (defaults to '*' and brings all columns across)
+      - name: exclude_columns
+        type: string
+        description: A list of columns from the source table to be excluded in the model. Cannot be used in conjunction with 'include_columns'
       - name: categories
         type: string
         description: The categories of each feature determined during fitting. Defaults to 'auto', which will encode all values.
       - name: handle_unknown
         type: string
-        description: Whether to raise an error or ignore if an unknown categorical feature is present during transform. Only supports the default value of 'ignore' at this time.
+        description: Whether to raise an error or ignore if an unknown categorical feature is present during transform, defaults to 'error'. If 'ignore' is set and an unknown value is encountered, all output columns will be false.
 
   - name: default__one_hot_encoder
     docs:
