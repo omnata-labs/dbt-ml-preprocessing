@@ -78,7 +78,7 @@ from
     {{ source_table }} as source_table
 {% endmacro %}
 
-{% macro redshift__robust_scaler(source_table,source_column,include_columns,with_centering,quantile_range) %}
+{% macro redshift__robust_scaler(source_table,source_columns,include_columns,with_centering,quantile_range) %}
 with 
 {% for source_column in source_columns %}
     {{ source_column }}_quartiles as(
