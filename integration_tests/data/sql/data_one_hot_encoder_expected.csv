@@ -1,4 +1,4 @@
-id_col,column_to_encode,column_to_encode_A,column_to_encode_B,column_to_encode_C,column_to_encode_D
+id_col,column_to_encode,is_column_to_encode_A,is_column_to_encode_B,is_column_to_encode_C,is_column_to_encode_D
 1,A,1,0,0,0
 2,B,0,1,0,0
 3,C,0,0,1,0

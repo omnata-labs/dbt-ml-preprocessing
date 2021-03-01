@@ -26,7 +26,7 @@ To use this in your dbt project, create or modify packages.yml to include:
 ```
 packages:
   - package: "omnata-labs/dbt_ml_preprocessing"
-    version: [">=0.7.0"]
+    version: [">=1.0.0"]
 ```
 _(replace the revision number with the latest)_
 

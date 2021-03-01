@@ -79,8 +79,8 @@ source_table.{{ column }},
 {% endfor %}
 {% for source_column in source_columns %}
 least(
-      ceil(
-          ({{ source_column }} - {{ source_column }}_aggregates.min_value )/ (( {{ source_column }}_aggregates.max_value - {{ source_column }}_aggregates.min_value ) / {{ n_bins }} )
+      floor(
+          cast({{ source_column }} - {{ source_column }}_aggregates.min_value as decimal)/ cast( {{ source_column }}_aggregates.max_value - {{ source_column }}_aggregates.min_value as decimal ) * {{ n_bins }} 
       ),
       {{ n_bins - 1 }}
   ) as {{ source_column }}_binned
