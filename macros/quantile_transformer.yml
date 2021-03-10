@@ -43,3 +43,7 @@ macros:
   - name: snowflake__quantile_transformer
     docs:
       show: false
+
+  - name: bigquery__quantile_transformer
+    docs:
+      show: false
