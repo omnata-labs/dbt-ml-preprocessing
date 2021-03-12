@@ -52,10 +52,6 @@
     {%- do exceptions.raise_compiler_error(error_message) -%}
     {%- endif -%}
 
-    {{ adapter.dispatch('one_hot_encoder',packages=['dbt_ml_preprocessing'])(source_table, source_column, category_values, handle_unknown, include_columns, exclude_columns) }}
-{%- endmacro %}
-
-{% macro default__one_hot_encoder(source_table, source_column, category_values, handle_unknown, include_columns, exclude_columns) %}
     {% set columns = adapter.get_columns_in_relation( source_table ) %}
 
     {%- if include_columns=='*' and exclude_columns is none -%}
@@ -71,6 +67,10 @@
         {%- endfor -%}
     {%- endif -%}
 
+    {{ adapter.dispatch('one_hot_encoder',packages=['dbt_ml_preprocessing'])(source_table, source_column, category_values, handle_unknown, col_list) }}
+{%- endmacro %}
+
+{% macro default__one_hot_encoder(source_table, source_column, category_values, handle_unknown, col_list) %}
 
     with binary_output as (
     select
