@@ -58,26 +58,25 @@
 {% macro default__one_hot_encoder(source_table, source_column, category_values, handle_unknown, include_columns, exclude_columns) %}
     {% set columns = adapter.get_columns_in_relation( source_table ) %}
 
-
+    {%- if include_columns=='*' and exclude_columns is none -%}
+        {% set col_list = columns %}
+    {%- elif include_columns !='*'-%}
+        {% set col_list = include_columns %}
+    {%- else -%}
+        {% set col_list = [] %}
+        {% for column in columns  %}
+            {%- if column.name | lower not in exclude_columns | lower %}
+                {% do col_list.append(column) %}
+            {%- endif -%}
+        {%- endfor -%}
+    {%- endif -%}
 
 
     with binary_output as (
     select
-        {%- if include_columns=='*' and exclude_columns is none -%}
-            {% for column in columns %}
-                {{ column.name }},
-            {%- endfor -%}
-        {%- elif include_columns !='*'-%}
-            {% for column in include_columns %}
-                {{ source_table }}.{{ column }},
-            {%- endfor -%}
-        {%- else -%}
-            {% for column in columns %}
-            {%- if column.name | lower not in exclude_columns | lower %}
-                {{ column.name }},
-            {%- endif -%}
-            {%- endfor -%}
-        {%- endif -%}
+        {% for column in col_list %}
+            {{ column.name }},
+        {%- endfor -%}
         {% for category in category_values %}
             {% set no_whitespace_column_name = category | replace( " ", "_") -%}
                 {%- if handle_unknown=='ignore' %}
