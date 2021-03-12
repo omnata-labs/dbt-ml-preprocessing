@@ -99,3 +99,37 @@
 
     select * from binary_output
 {%- endmacro %}
+
+{% macro sqlserver__one_hot_encoder(source_table, source_column, category_values, handle_unknown, col_list) %}
+
+    with binary_output as (
+    select
+        {% for column in col_list %}
+            {{ column.name }},
+        {%- endfor -%}
+        {% for category in category_values %}
+            {% set no_whitespace_column_name = category | replace( " ", "_") -%}
+                {%- if handle_unknown=='ignore' %}
+                    case 
+                        when {{ source_column }} = '{{ category }}' then 1 
+                        else 0
+                    end as is_{{ source_column }}_{{ no_whitespace_column_name }}
+                {% endif %}
+                {%- if handle_unknown=='error' %}
+                    case 
+                        when {{ source_column }} = '{{ category }}' then 1 
+                        when {{ source_column }} in ('{{ category_values | join("','") }}') then 0
+                        else cast('Error: unknown value found and handle_unknown parameter was "error"' as bit)
+                    end as is_{{ source_column }}_{{ no_whitespace_column_name }}
+                {% endif %}
+            {%- if not loop.last %},{% endif -%}
+        {% endfor %}
+    from {{ source_table }}
+    )
+
+    select * from binary_output
+{%- endmacro %}
+
+{% macro synapse__one_hot_encoder(source_table, source_column, category_values, handle_unknown, col_list) %}
+    {% do return( dbt_ml_preprocessing.sqlserver__one_hot_encoder(source_table, source_column, category_values, handle_unknown, col_list)) %}
+{%- endmacro %}
