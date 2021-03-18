@@ -72,7 +72,6 @@
 
 {% macro default__one_hot_encoder(source_table, source_column, category_values, handle_unknown, col_list) %}
 
-    with binary_output as (
     select
         {% for column in col_list %}
             {{ column.name }},
@@ -95,14 +94,10 @@
             {%- if not loop.last %},{% endif -%}
         {% endfor %}
     from {{ source_table }}
-    )
-
-    select * from binary_output
 {%- endmacro %}
 
 {% macro sqlserver__one_hot_encoder(source_table, source_column, category_values, handle_unknown, col_list) %}
 
-    with binary_output as (
     select
         {% for column in col_list %}
             {{ column.name }},
@@ -125,9 +120,7 @@
             {%- if not loop.last %},{% endif -%}
         {% endfor %}
     from {{ source_table }}
-    )
-
-    select * from binary_output
+      
 {%- endmacro %}
 
 {% macro synapse__one_hot_encoder(source_table, source_column, category_values, handle_unknown, col_list) %}
