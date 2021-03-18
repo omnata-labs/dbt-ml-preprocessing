@@ -6,7 +6,7 @@
                 {{ source_column }}
             from
                 {{ source_table }}
-            order by 1
+            order by {{ source_column }}
         {% endset %}
         {% set results = run_query(category_values_query) %}
         {% if execute %}
