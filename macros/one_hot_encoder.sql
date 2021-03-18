@@ -58,10 +58,6 @@
 {% macro default__one_hot_encoder(source_table, source_column, category_values, handle_unknown, include_columns, exclude_columns) %}
     {% set columns = adapter.get_columns_in_relation( source_table ) %}
 
-
-
-
-    with binary_output as (
     select
         {%- if include_columns=='*' and exclude_columns is none -%}
             {% for column in columns %}
@@ -96,7 +92,4 @@
             {%- if not loop.last %},{% endif -%}
         {% endfor %}
     from {{ source_table }}
-    )
-
-    select * from binary_output
 {%- endmacro %}
