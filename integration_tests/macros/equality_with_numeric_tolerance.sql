@@ -56,6 +56,11 @@ from joined
 where percent_difference > {{ percentage_tolerance }}
 {% endmacro %}
 
+{% macro sqlserver__test_equality_with_numeric_tolerance(model,compare_model,source_join_column,target_join_column,source_numeric_column_name,target_numeric_column_name,percentage_tolerance,output_all_rows=False) %}
+{% do return( redshift__test_equality_with_numeric_tolerance(model,compare_model,source_join_column,target_join_column,source_numeric_column_name,target_numeric_column_name,percentage_tolerance,output_all_rows=False)) %}
+{% endmacro %}
+
+
 {% macro snowflake__test_equality_with_numeric_tolerance(model,compare_model,source_join_column,target_join_column,source_numeric_column_name,target_numeric_column_name,percentage_tolerance,output_all_rows=False) %}
 {% set compare_cols_csv = compare_columns | join(', ') %}
 with a as (

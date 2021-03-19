@@ -49,3 +49,11 @@ select
 (select row_num from numbered_distinct_values where distinct_value={{ source_column }}) as {{ source_column }}_encoded
 from {{ source_table }}
 {% endmacro %}
+
+{% macro synapse__label_encoder(source_table,source_column,include_columns) %}
+    {% do return( dbt_ml_preprocessing.redshift__label_encoder(source_table,source_column,include_columns)) %}
+{%- endmacro %}
+
+{% macro sqlserver__label_encoder(source_table,source_column,include_columns) %}
+    {% do return( dbt_ml_preprocessing.redshift__label_encoder(source_table,source_column,include_columns)) %}
+{%- endmacro %}

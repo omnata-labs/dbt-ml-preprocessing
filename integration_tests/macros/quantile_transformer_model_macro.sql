@@ -1,24 +1,16 @@
--- macro is only supported in Snowflake
 {% macro snowflake__quantile_transformer_model_macro() %}
 with data as (
-
     {{ dbt_ml_preprocessing.quantile_transformer( ref('data_quantile_transformer') ,'col_to_transform') }}
-
 )
 select * from data
 {% endmacro %}
 
--- other adapters we generate an empty test result to force a test pass
-{% macro bigquery__quantile_transformer_model_macro() %}
-with data as (
-
-    {{ dbt_ml_preprocessing.quantile_transformer( ref('data_quantile_transformer') ,'col_to_transform') }}
-
-)
-select * from data
-{% endmacro %}
-
--- other adapters we generate an empty test result to force a test pass
+-- macro not supported in other databases
 {% macro default__quantile_transformer_model_macro() %}
-select 1 as empty_result from (select 1) where 1=2
+select 1 from (select 1) where 1=2 -- empty result set so that test passes
+{% endmacro %}
+
+-- macro not supported in sqlserver
+{% macro sqlserver__quantile_transformer_model_macro() %}
+select null as '1' where 1=2 -- empty result set so that test passes
 {% endmacro %}

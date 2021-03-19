@@ -104,3 +104,29 @@ from
     {{ source_table }} as source_table
 
 {% endmacro %}
+
+{% macro sqlserver__robust_scaler(source_table,source_columns,include_columns,with_centering,quantile_range) %}
+with 
+{% for source_column in source_columns %}
+    {{ source_column }}_quartiles as(
+        select
+            percentile_cont({{ quantile_range[0] / 100 }}) within group (order by {{ source_column }}) OVER(PARTITION BY {{ source_column }}) as first_quartile,
+            percentile_cont({{ quantile_range[1] / 100 }}) within group (order by {{ source_column }}) OVER(PARTITION BY {{ source_column }}) as third_quartile
+        from {{ source_table }}
+    )
+{% if not loop.last %}, {% endif %}
+{% endfor %}
+select 
+{% for column in include_columns %}
+source_table.{{ column }},
+{% endfor %}
+{% for source_column in source_columns %}
+    ({{ source_column }} / ({{ source_column }}_quartiles.third_quartile - {{ source_column }}_quartiles.first_quartile)) as {{ source_column }}_scaled
+    {% if not loop.last %}, {% endif %}
+{% endfor %}
+from 
+    {% for source_column in source_columns %}
+        {{ source_column }}_quartiles,
+    {% endfor %}
+    {{ source_table }} as source_table
+{% endmacro %}

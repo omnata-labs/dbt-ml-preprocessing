@@ -71,6 +71,29 @@ from
   {{ source_table }} as source_table
 {% endmacro %}
 
+{% macro sqlserver__k_bins_discretizer(source_table,source_columns,include_columns,n_bins,encode,strategy) %}
+select 
+{% for column in include_columns %}
+source_table.{{ column }},
+{% endfor %}
+{% for source_column in source_columns %}
+case when 
+      floor(
+          cast({{ source_column }} - {{ source_column }}_aggregates.min_value as decimal)/ cast( {{ source_column }}_aggregates.max_value - {{ source_column }}_aggregates.min_value as decimal ) * {{ n_bins }} 
+      ) > {{ n_bins - 1 }}
+      then floor(
+          cast({{ source_column }} - {{ source_column }}_aggregates.min_value as decimal)/ cast( {{ source_column }}_aggregates.max_value - {{ source_column }}_aggregates.min_value as decimal ) * {{ n_bins }} 
+      )
+      else {{ n_bins - 1 }}
+      end as {{ source_column }}_binned
+    {% if not loop.last %}, {% endif %}
+{% endfor %}
+from   
+  {% for source_column in source_columns %}
+      {{ source_column }}_aggregates,
+  {% endfor %}
+  {{ source_table }} as source_table
+{% endmacro %}
 
 {% macro default__k_bins_discretizer(source_table,source_columns,include_columns,n_bins,encode,strategy) %}
 select 
