@@ -9,7 +9,7 @@ Currently they have been tested in Snowflake, Redshift , BigQuery, and SQL Serve
 The macros are:
 
 | scikit-learn function | macro name | Snowflake | BigQuery | Redshift | MSSQL | Example |
-| --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- | --- |
 | [KBinsDiscretizer](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.KBinsDiscretizer.html#sklearn.preprocessing.KBinsDiscretizer)| k_bins_discretizer  | Y | Y | Y | N | ![example](images/k_bins.gif) |
 | [LabelEncoder](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.LabelEncoder.html#sklearn.preprocessing.LabelEncoder)| label_encoder  | Y | Y | Y | Y | ![example](images/label_encoder.gif) |
 | [MaxAbsScaler](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MaxAbsScaler.html#sklearn.preprocessing.MaxAbsScaler) | max_abs_scaler | Y | Y | Y | Y | [![example](images/max_abs_scaler.png)](https://scikit-learn.org/stable/auto_examples/preprocessing/plot_all_scaling.html#maxabsscaler) |
