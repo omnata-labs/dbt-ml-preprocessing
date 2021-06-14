@@ -71,3 +71,7 @@ The `quantile_transformer` macro is only supported on Snowflake and BigQuery at 
 {% endset %}
 {%- do exceptions.raise_compiler_error(error_message) -%}
 {% endmacro %}
+
+{% macro postgre__quantile_transformer(source_table,source_column,n_quantiles,output_distribution,subsample,include_columns) %}
+    {% do return( dbt_ml_preprocessing.bigquery__quantile_transformer(source_table,source_column,n_quantiles,output_distribution,subsample,include_columns)) %}
+{% endmacro %}

@@ -19,7 +19,7 @@ models:
           target_join_column: id_col
           source_numeric_column_name: col_to_scale_scaled
           target_numeric_column_name: col_to_scale_scaled
-          percentage_tolerance: 0.00000001
+          percentage_tolerance: 0.009
 
   - name: test_min_max_scaler_with_column_selection
     tests:
@@ -29,7 +29,7 @@ models:
           target_join_column: id_col
           source_numeric_column_name: col_to_scale_scaled
           target_numeric_column_name: col_to_scale_scaled
-          percentage_tolerance: 0.00000001
+          percentage_tolerance: 0.009
 
   - name: test_k_bins_discretizer_default_bins
     tests:

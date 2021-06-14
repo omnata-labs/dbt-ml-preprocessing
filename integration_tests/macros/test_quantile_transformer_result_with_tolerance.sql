@@ -19,3 +19,8 @@ select 1 from (select 1) where 1=2 -- empty result set so that test passes
 {% macro sqlserver__test_quantile_transformer_result_with_tolerance() %}
 select null as '1' where 1=2 -- empty result set so that test passes
 {% endmacro %}
+
+-- testing macro not supported in postgres
+{% macro postgres__test_quantile_transformer_result_with_tolerance() %}
+select null where 1=2 -- empty result set so that test passes
+{% endmacro %}
