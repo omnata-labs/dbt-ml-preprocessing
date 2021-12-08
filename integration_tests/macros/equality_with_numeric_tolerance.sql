@@ -23,10 +23,10 @@ information schema — this allows the model to be an ephemeral model
 {% set target_numeric_column_name = kwargs.get('target_numeric_column_name', kwargs.get('arg')) %}
 {% set percentage_tolerance = kwargs.get('percentage_tolerance', kwargs.get('arg')) %}
 
-{{ return(adapter.dispatch('test_equality_with_numeric_tolerance')(model,compare_model,source_join_column,target_join_column,source_numeric_column_name,target_numeric_column_name,percentage_tolerance)) }}
+{{ return(adapter.dispatch('test_equality_with_numeric_tolerance')(model,compare_model,source_join_column,target_join_column,source_numeric_column_name,target_numeric_column_name,percentage_tolerance,True)) }}
 {% endmacro %}
 
-{% macro default__test_equality_with_numeric_tolerance(model,compare_model,source_join_column,target_join_column,source_numeric_column_name,target_numeric_column_name,percentage_tolerance,output_all_rows=False) %}
+{% macro default__test_equality_with_numeric_tolerance(model,compare_model,source_join_column,target_join_column,source_numeric_column_name,target_numeric_column_name,percentage_tolerance,output_all_rows) %}
 {% set compare_cols_csv = compare_columns | join(', ') %}
 with a as (
     select * from {{ model }}
@@ -56,16 +56,12 @@ from joined
 where percent_difference > {{ percentage_tolerance }}
 {% endmacro %}
 
-{% macro sqlserver__test_equality_with_numeric_tolerance(model,compare_model,source_join_column,target_join_column,source_numeric_column_name,target_numeric_column_name,percentage_tolerance,output_all_rows=False) %}
-{% do return( redshift__test_equality_with_numeric_tolerance(model,compare_model,source_join_column,target_join_column,source_numeric_column_name,target_numeric_column_name,percentage_tolerance,output_all_rows=False)) %}
-{% endmacro %}
-
-{% macro postgres__test_equality_with_numeric_tolerance(model,compare_model,source_join_column,target_join_column,source_numeric_column_name,target_numeric_column_name,percentage_tolerance,output_all_rows=False) %}
-{% do return( redshift__test_equality_with_numeric_tolerance(model,compare_model,source_join_column,target_join_column,source_numeric_column_name,target_numeric_column_name,percentage_tolerance,output_all_rows=False)) %}
+{% macro postgres__test_equality_with_numeric_tolerance(model,compare_model,source_join_column,target_join_column,source_numeric_column_name,target_numeric_column_name,percentage_tolerance,output_all_rows) %}
+{% do return( redshift__test_equality_with_numeric_tolerance(model,compare_model,source_join_column,target_join_column,source_numeric_column_name,target_numeric_column_name,percentage_tolerance,output_all_rows)) %}
 {% endmacro %}
 
 
-{% macro snowflake__test_equality_with_numeric_tolerance(model,compare_model,source_join_column,target_join_column,source_numeric_column_name,target_numeric_column_name,percentage_tolerance,output_all_rows=False) %}
+{% macro snowflake__test_equality_with_numeric_tolerance(model,compare_model,source_join_column,target_join_column,source_numeric_column_name,target_numeric_column_name,percentage_tolerance,output_all_rows) %}
 {% set compare_cols_csv = compare_columns | join(', ') %}
 with a as (
     select * from {{ model }}
@@ -92,7 +88,7 @@ from joined
 where percent_difference > {{ percentage_tolerance }}
 {% endmacro %}
 
-{% macro redshift__test_equality_with_numeric_tolerance(model,compare_model,source_join_column,target_join_column,source_numeric_column_name,target_numeric_column_name,percentage_tolerance,output_all_rows=False) %}
+{% macro redshift__test_equality_with_numeric_tolerance(model,compare_model,source_join_column,target_join_column,source_numeric_column_name,target_numeric_column_name,percentage_tolerance,output_all_rows) %}
 {% set compare_cols_csv = compare_columns | join(', ') %}
 with a as (
     select * from {{ model }}
@@ -120,6 +116,40 @@ select {% if output_all_rows %}
        count(*) 
        {% endif %}
 from joined
+-- The reason we tolerate tiny differences here is because of the floating point arithmetic, 
+-- the values do not end up exactly the same as those output from python
+where percent_difference > {{ percentage_tolerance }}
+{% endmacro %}
+
+{% macro sqlserver__test_equality_with_numeric_tolerance(model,compare_model,source_join_column,target_join_column,source_numeric_column_name,target_numeric_column_name,percentage_tolerance,output_all_rows) %}
+{% set compare_cols_csv = compare_columns | join(', ') %}
+with a as (
+    select * from {{ model }}
+),
+b as (
+    select * from {{ compare_model }}
+),
+joined as(
+    select round(a.{{ source_numeric_column_name }},6) as actual,
+        round(b.{{ target_numeric_column_name }},6) as expected,
+    b.{{ target_numeric_column_name }} as actual_value
+  from a
+  join b on a.{{ source_join_column }}=b.{{ target_join_column }}
+  ),
+joined_calced as(
+    select 
+        abs(actual-expected) as difference,
+        iif(abs(actual-expected)>0,
+            abs(actual-expected)/actual_value,
+            0)*100 as percent_difference
+  from joined
+)
+select {% if output_all_rows %}
+        *
+       {% else %}
+       count(*) 
+       {% endif %}
+from joined_calced
 -- The reason we tolerate tiny differences here is because of the floating point arithmetic, 
 -- the values do not end up exactly the same as those output from python
 where percent_difference > {{ percentage_tolerance }}

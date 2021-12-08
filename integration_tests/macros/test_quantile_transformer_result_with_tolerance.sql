@@ -12,7 +12,7 @@
 
 -- testing macro only works on Snowflake
 {% macro default__test_quantile_transformer_result_with_tolerance() %}
-select 1 from (select 1) where 1=2 -- empty result set so that test passes
+select 1 as one from (select 1) where 1=2 -- empty result set so that test passes
 {% endmacro %}
 
 -- testing macro not supported in sqlserver

@@ -33,7 +33,7 @@ with
     )
 {% if not loop.last %}, {% endif %}
 {% endfor %}
-{{ adapter.dispatch('k_bins_discretizer',packages=['dbt_ml_preprocessing'])(source_table,source_columns,include_columns,n_bins,encode,strategy) }}
+{{ adapter.dispatch('k_bins_discretizer','dbt_ml_preprocessing')(source_table,source_columns,include_columns,n_bins,encode,strategy) }}
 {% endmacro %}
 
 
@@ -80,7 +80,7 @@ source_table.{{ column }},
 case when 
       floor(
           cast({{ source_column }} - {{ source_column }}_aggregates.min_value as decimal)/ cast( {{ source_column }}_aggregates.max_value - {{ source_column }}_aggregates.min_value as decimal ) * {{ n_bins }} 
-      ) > {{ n_bins - 1 }}
+      ) < {{ n_bins - 1 }}
       then floor(
           cast({{ source_column }} - {{ source_column }}_aggregates.min_value as decimal)/ cast( {{ source_column }}_aggregates.max_value - {{ source_column }}_aggregates.min_value as decimal ) * {{ n_bins }} 
       )

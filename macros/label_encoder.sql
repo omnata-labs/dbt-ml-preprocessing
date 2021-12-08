@@ -1,5 +1,5 @@
 {% macro label_encoder(source_table,source_column, include_columns='*') %}
-{{ adapter.dispatch('label_encoder',packages=['dbt_ml_preprocessing'])(source_table,source_column,include_columns) }}
+{{ adapter.dispatch('label_encoder','dbt_ml_preprocessing')(source_table,source_column,include_columns) }}
 {% endmacro %}
 
 {% macro default__label_encoder(source_table,source_column,include_columns) %}

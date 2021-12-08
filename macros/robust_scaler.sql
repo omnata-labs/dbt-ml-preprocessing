@@ -22,7 +22,7 @@ The `source_columns` parameter must contain a list of column names.
 {%- set all_source_columns = adapter.get_columns_in_relation(source_table) | map(attribute='quoted') -%}
 {% set include_columns = all_source_columns %}
 {%- endif -%}
-{{ adapter.dispatch('robust_scaler',packages=['dbt_ml_preprocessing'])(source_table,source_columns,include_columns,with_centering,quantile_range) }}
+{{ adapter.dispatch('robust_scaler','dbt_ml_preprocessing')(source_table,source_columns,include_columns,with_centering,quantile_range) }}
 {% endmacro %}
 
 {% macro default__robust_scaler(source_table,source_columns,include_columns,with_centering,quantile_range) %}
@@ -110,8 +110,8 @@ with
 {% for source_column in source_columns %}
     {{ source_column }}_quartiles as(
         select
-            percentile_cont({{ quantile_range[0] / 100 }}) within group (order by {{ source_column }}) OVER(PARTITION BY {{ source_column }}) as first_quartile,
-            percentile_cont({{ quantile_range[1] / 100 }}) within group (order by {{ source_column }}) OVER(PARTITION BY {{ source_column }}) as third_quartile
+            percentile_cont({{ quantile_range[0] / 100 }}) within group (order by {{ source_column }}) OVER() as first_quartile,
+            percentile_cont({{ quantile_range[1] / 100 }}) within group (order by {{ source_column }}) OVER() as third_quartile
         from {{ source_table }}
     )
 {% if not loop.last %}, {% endif %}

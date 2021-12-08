@@ -14,7 +14,11 @@ select * from data
 
 -- macro not supported in other databases
 {% macro default__quantile_transformer_model_macro() %}
-select 1 from (select 1) where 1=2 -- empty result set so that test passes
+select 1 as one from (select 1) where 1=2 -- empty result set so that test passes
+{% endmacro %}
+
+{% macro redshift__quantile_transformer_model_macro() %}
+select 1 as one from (select 1) where 1=2 -- empty result set so that test passes
 {% endmacro %}
 
 -- macro not supported in sqlserver

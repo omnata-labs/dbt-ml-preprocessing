@@ -67,7 +67,7 @@
         {%- endfor -%}
     {%- endif -%}
 
-    {{ adapter.dispatch('one_hot_encoder',packages=['dbt_ml_preprocessing'])(source_table, source_column, category_values, handle_unknown, col_list) }}
+    {{ adapter.dispatch('one_hot_encoder','dbt_ml_preprocessing')(source_table, source_column, category_values, handle_unknown, col_list) }}
 {%- endmacro %}
 
 {% macro default__one_hot_encoder(source_table, source_column, category_values, handle_unknown, col_list) %}

@@ -1,13 +1,13 @@
 name: 'dbt_ml_preprocessing'
-version: '1.0.2'
+version: '1.1.0'
 
-require-dbt-version: ">=0.15.1"
+require-dbt-version: ">=1.0.0"
 
 config-version: 2
 
 profile: "integration_tests"
 
-source-paths: ["models"]
+model-paths: ["models"]
 target-path: "target"
 clean-targets: ["target", "dbt_modules"]
 macro-paths: ["macros"]
