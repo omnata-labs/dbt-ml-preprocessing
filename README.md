@@ -6,6 +6,10 @@ The package contains a set of macros that mirror the functionality of the [sciki
 
 Currently they have been tested in Snowflake, Redshift , BigQuery, SQL Server and PostgreSQL 13.2. The test case expectations have been built using scikit-learn (see *.py in [integration_tests/data/sql](integration_tests/data/sql)), so you can expect behavioural parity with it.
 
+| :warning: There are now several better alternatives to this repository. If you're using Snowflake, they now offer the snowflake-ml-python package which is fully supported and much more comprehensive. Within dbt, the Python models feature allows Snowflake, BigQuery and Databricks users to use scikit-learn directly |
+| --- |
+
+
 The macros are:
 
 | scikit-learn function | macro name | Snowflake | BigQuery | Redshift | MSSQL | PostgreSQL | Example |
