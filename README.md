@@ -39,7 +39,7 @@ Then run:
 ```dbt deps``` to import the package.
 
 ### dbt 1.0.0 compatibility
-dbt-ml-preprocessing version 1.2.0 is the first version to support (and require) dbt 1.0.0.
+dbt-ml-preprocessing version 1.1.0 is the first version to support (and require) dbt 1.0.0.
 
 If you are not ready to upgrade to dbt 1.0.0, please use dbt-ml-preprocessing version 1.0.2.
 
